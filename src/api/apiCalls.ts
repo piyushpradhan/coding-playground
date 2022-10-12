@@ -19,6 +19,7 @@ export const updateContainerFileContents = (
 ) => {
   fetch(process.env.REACT_APP_BASE_URL + `/containers/${containerId}/exec`, {
     method: "POST",
+	mode: "no-cors",
     headers: {
       "Content-Type": "application/json",
     },

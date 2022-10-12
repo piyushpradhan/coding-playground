@@ -26,6 +26,10 @@ const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
   },
 };
 
+type FileContents = {
+  response: string
+};
+
 const CustomEditor = () => {
   const [code, setCode] = React.useState("");
   const [codeValue, setCodeValue] = React.useState("");
