@@ -19,11 +19,7 @@ export const updateContainerFileContents = (
 ) => {
   fetch(process.env.REACT_APP_BASE_URL + `/containers/${containerId}/exec`, {
     method: "POST",
-	mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: `echo ${content} > ${filePath}`,
+    body: `command=echo ${content} > ${filePath}`,
   })
     .then((res) => res.json())
     .then((data) => {
@@ -39,12 +35,12 @@ export const fetchFileContents = async (
   const contents = await fetch(
     process.env.REACT_APP_BASE_URL + `/containers/${containerId}/exec`,
     {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: `cat ${filePath}`,
-    }
+	  method: 'POST',
+	  headers: {
+		  'Content-Type': 'application/x-www-form-urlencoded'
+	  },
+	  body: `command=cat ${filePath}`
+	}
   );
-  return contents.json();
+  return contents.text();
 };

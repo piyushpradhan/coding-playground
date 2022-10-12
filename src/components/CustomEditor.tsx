@@ -6,6 +6,9 @@ import { updateEditorContentActions } from "../redux/actions";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { fetchFileContents } from "../api/apiCalls";
+import { bindActionCreators } from "redux";
+import * as actionCretors from "../redux/actions/editorActions";
+import { useDispatch } from "react-redux";
 
 const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
   autoIndent: "full",
@@ -26,23 +29,23 @@ const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
   },
 };
 
-type FileContents = {
-  response: string
-};
-
 const CustomEditor = () => {
   const [code, setCode] = React.useState("");
   const [codeValue, setCodeValue] = React.useState("");
-  const { containerId, currentFile, data } = useSelector(
+  const { containerId, data } = useSelector(
     (state: RootState) => state.editorReducer
   );
+  const dispatch = useDispatch();
+  const { updateEditorContentActions } = bindActionCreators(actionCretors, dispatch);
 
   console.log(data);
-  console.log(containerId);
 
   useEffect(() => {
-    const appContents = fetchFileContents(containerId!, "/app/src/App.js");
-    console.log(appContents);
+	const getFileContents = async () => {
+	  const appContents = await fetchFileContents(containerId!, "/app/src/App.js");
+	  updateEditorContentActions(appContents, "/app/src/App.js");
+	};
+	getFileContents();
   }, []);
 
   useEffect(() => {
@@ -54,7 +57,7 @@ const CustomEditor = () => {
   }, [code]);
 
   const handleOnSave = () => {
-    window.onkeydown = (e) => {
+    window.onkeydown = (e: { key: string; ctrlKey: boolean; preventDefault: () => void; }) => {
       if (e.key === "s" && e.ctrlKey === true) {
         e.preventDefault();
         updateEditorContentActions(containerId!, code);
@@ -66,7 +69,7 @@ const CustomEditor = () => {
     if (editor && editor.getModel()) {
       const editorModel = editor.getModel();
       if (editorModel) {
-        editorModel?.setValue('const a = "Hello World";');
+        editorModel?.setValue(data ?? '');
       }
     }
     editor.focus();

@@ -13,7 +13,7 @@ const FileTree = () => {
   );
   const openFile = async (item: FileTreeNode) => {
 	if (item.type === "file") {
-	  const data: string = await fetchFileContents(containerId!, item.path);
+	  const data: any = await fetchFileContents(containerId!, item.path);
 	  updateEditorContentActions(data, item.path);
 	}
   };
