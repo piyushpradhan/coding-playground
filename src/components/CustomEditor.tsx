@@ -2,6 +2,10 @@ import React, { useEffect, useRef } from "react";
 import MonacoEditor, { EditorDidMount } from "react-monaco-editor";
 import * as monaco from "monaco-editor";
 import Editor from "@monaco-editor/react";
+import { updateEditorContentActions } from "../redux/actions";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { fetchFileContents } from "../api/apiCalls";
 
 const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
   autoIndent: "full",
@@ -25,6 +29,17 @@ const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
 const CustomEditor = () => {
   const [code, setCode] = React.useState("");
   const [codeValue, setCodeValue] = React.useState("");
+  const { containerId, currentFile, data } = useSelector(
+    (state: RootState) => state.editorReducer
+  );
+
+  console.log(data);
+  console.log(containerId);
+
+  useEffect(() => {
+    const appContents = fetchFileContents(containerId!, "/app/src/App.js");
+    console.log(appContents);
+  }, []);
 
   useEffect(() => {
     const codeTimeout = setTimeout(() => {
@@ -38,6 +53,7 @@ const CustomEditor = () => {
     window.onkeydown = (e) => {
       if (e.key === "s" && e.ctrlKey === true) {
         e.preventDefault();
+        updateEditorContentActions(containerId!, code);
       }
     };
   };
@@ -64,7 +80,7 @@ const CustomEditor = () => {
       <Editor
         width="100%"
         height="80vh"
-        language="typescript"
+        language="javascript"
         theme="vs-dark"
         value={code}
         options={MONACO_OPTIONS}

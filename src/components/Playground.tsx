@@ -3,6 +3,7 @@ import BrowserView from "./BrowserView";
 import CustomTerminal from "./CustomTerminal";
 import Split from "react-split";
 import { useState } from "react";
+import FileTree from "./FileTree";
 
 const Playground = () => {
   const horizontalSizes = [50, 50];
@@ -20,18 +21,21 @@ const Playground = () => {
         dragInterval={1}
         snapOffset={30}
       >
-        <Split
-          direction="horizontal"
-          sizes={horizontalSizes}
-          gutterSize={10}
-          gutterAlign="center"
-          snapOffset={30}
-          dragInterval={1}
-          className="flex flex-row w-full h-full"
-        >
-          <CustomEditor />
-          <BrowserView />
-        </Split>
+        <div className="flex flex-row w-full h-full">
+          <FileTree />
+          <Split
+            direction="horizontal"
+            sizes={horizontalSizes}
+            gutterSize={10}
+            gutterAlign="center"
+            snapOffset={30}
+            dragInterval={1}
+            className="flex flex-row w-full h-full"
+          >
+            <CustomEditor />
+            <BrowserView />
+          </Split>
+        </div>
         <CustomTerminal />
       </Split>
     </div>

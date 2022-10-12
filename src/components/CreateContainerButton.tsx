@@ -1,27 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { EditorActions } from "../redux/actions";
+import { useNavigate } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { startContainer } from "../api/apiCalls";
+import * as actionCreators from "../redux/actions/editorActions";
+
+import {
+  loadingState,
+  readyState,
+} from "../redux/actions";
 import { RootState } from "../redux/store";
 
 const CreateContainerButton = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoading = useSelector(
     (state: RootState) => state.editorReducer.loading
   );
-  const handleClick = (e: { preventDefault: () => void }) => {
+  const { updateContainer } = bindActionCreators(actionCreators, dispatch);
+
+  const handleClick = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    dispatch(EditorActions.loading());
-    fetch(process.env.REACT_APP_BASE_URL + "containers/start", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
+    loadingState();
+    const response = await startContainer();
+    console.log(response.container);
+	updateContainer(response.container, response.reactPort);
+    // updateContainerId(response.container);
+    // updatePort(parseInt(response.reactPort));
+    readyState();
+    navigate(`/playground/${response.container}`);
   };
 
   return (
