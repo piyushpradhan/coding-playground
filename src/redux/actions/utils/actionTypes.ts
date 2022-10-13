@@ -1,13 +1,18 @@
 enum ActionTypes {
-  SAVE = "SAVE",
-  LOADING = "LOADING",
-  READY = "READY",
-  UPDATE_EDITOR = "UPDATE_EDITOR",
-  CREATE_FILE = "CREATE_FILE",
-  UPDATE_CURRENT_FILE = "UPDATE_CURRENT_FILE",
-  UPDATE_FILE_TREE = "UPDATE_FILE_TREE",
-  UPDATE_CONTAINER_ID = "UPDATE_CONTAINER_ID",
-  UPDATE_PORT = "UPDATE_PORT",
+    SAVE = "SAVE",
+    LOADING = "LOADING",
+    READY = "READY",
+    UPDATE_EDITOR = "UPDATE_EDITOR",
+    CREATE_FILE = "CREATE_FILE",
+    UPDATE_CURRENT_FILE = "UPDATE_CURRENT_FILE",
+    UPDATE_FILE_TREE = "UPDATE_FILE_TREE",
+    UPDATE_CONTAINER_ID = "UPDATE_CONTAINER_ID",
+    UPDATE_PORT = "UPDATE_PORT",
+    CLEAR = "CLEAR"
+}
+
+interface ClearAction {
+  type: ActionTypes.CLEAR;
 }
 
 interface UpdatePortAction {
@@ -66,6 +71,7 @@ export type Action =
   | FileTreeReadyAction
   | FileTreeUpdateAction
   | UpdateContainerAction
-  | UpdatePortAction;
+  | UpdatePortAction
+  | ClearAction;
 
 export default ActionTypes;

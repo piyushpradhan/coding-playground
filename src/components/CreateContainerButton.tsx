@@ -13,10 +13,11 @@ const CreateContainerButton = () => {
   const isLoading = useSelector(
     (state: RootState) => state.editorReducer.loading
   );
-  const { updateContainer, loadingState, readyState } = bindActionCreators(actionCreators, dispatch);
+  const { clearEditorAction, updateContainer, loadingState, readyState } = bindActionCreators(actionCreators, dispatch);
 
   const handleClick = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+	clearEditorAction();
     loadingState();
     const response = await startContainer();
 	updateContainer(response.container, response.reactPort);

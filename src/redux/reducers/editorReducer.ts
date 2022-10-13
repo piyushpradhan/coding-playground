@@ -61,6 +61,8 @@ export const editorReducer = (
 		...state,
 		data: action.payload
 	  }
+	case ActionTypes.CLEAR:
+	  return initialState; 
     default:
       return state;
   }

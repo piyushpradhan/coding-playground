@@ -63,6 +63,14 @@ export const saveFile = (containerId: string, filePath: string, contents: string
   return dispatchAction(action);
 }
 
+export const clearEditorAction = () => {
+  const action: Action = {
+	type: ActionTypes.CLEAR,
+  };
+
+  return dispatchAction(action);
+}
+
 export const dispatchAction = (action: Action) => {
   return (dispatch: Dispatch) => {
 	dispatch(action);
