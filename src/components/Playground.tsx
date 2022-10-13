@@ -7,13 +7,14 @@ import FileTree from "./FileTree";
 
 const Playground = () => {
   const horizontalSizes = [50, 50];
-  const verticalSizes = [70, 30];
+  const verticalSizes = [60, 40];
   return (
-    <div>
+    <div className="overflow-y-hidden">
       <div className="p-2 bg-gray-800 font-bold text-white h-full">
         <h2>React Playground</h2>
       </div>
       <Split
+		className="bg-gray-800 h-full"
         direction="vertical"
         sizes={verticalSizes}
         gutterSize={10}
@@ -36,7 +37,9 @@ const Playground = () => {
             <BrowserView />
           </Split>
         </div>
-        <CustomTerminal />
+		<div className="w-full h-full">
+		  <CustomTerminal />
+		</div>
       </Split>
     </div>
   );

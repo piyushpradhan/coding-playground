@@ -8,7 +8,7 @@ import { saveFile } from "../api/apiCalls";
 import { bindActionCreators } from "redux";
 import * as actionCretors from "../redux/actions/editorActions";
 import { useDispatch } from "react-redux";
-import { formatFileContents, pickLanguage } from "../utils/helpers";
+import { pickLanguage } from "../utils/helpers";
 
 const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
   autoIndent: "full",
@@ -77,7 +77,7 @@ const CustomEditor = () => {
     <div className="w-full" onKeyDown={handleOnSave}>
       <Editor
         width="100%"
-        height="80vh"
+        height="70vh"
         language={pickLanguage(currentFile)}
         theme="vs-dark"
         value={code}

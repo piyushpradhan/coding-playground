@@ -52,7 +52,6 @@ export const saveFile = async (
   filePath: string,
   contents: string
 ) => {
-  console.log(formatFileContents(contents));
   const response = await fetch(
 	process.env.REACT_APP_BASE_URL + `/containers/${containerId}/exec`,
 	{
@@ -64,6 +63,20 @@ export const saveFile = async (
 	}
   );
 
-  console.log(response);
+  return response;
+}
+
+export const executeCommands = async (command: string, containerId: string) => {
+ const response = await fetch(
+	process.env.REACT_APP_BASE_URL + `/containers/${containerId}/exec`, 
+	{
+	  method: 'POST',
+	  headers: {
+		'Content-Type': 'application/x-www-form-urlencoded',
+	  },
+	  body: `command=${command}`
+	}
+  ) 
+
   return response;
 }
