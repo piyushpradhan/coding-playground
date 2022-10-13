@@ -54,32 +54,17 @@ export const updatePort = (port: number) => {
   return dispatchAction(action);
 };
 
+export const saveFile = (containerId: string, filePath: string, contents: string) => {
+  const action: Action = {
+	type: ActionTypes.SAVE,
+	payload: contents
+  };
+
+  return dispatchAction(action);
+}
+
 export const dispatchAction = (action: Action) => {
   return (dispatch: Dispatch) => {
 	dispatch(action);
   }
 }
-
-// export const getContainerId = () => {
-//   return (dispatch: Dispatch<Action>) => {
-//     dispatch({
-//       type: ActionTypes.LOADING,
-//     });
-//     fetch(process.env.REACT_APP_BASE_URL + "/api/containerId")
-//       .then((res) => res.json())
-//       .then((data) => {
-//         dispatch({
-//           type: ActionTypes.READY,
-//         });
-//         dispatch({
-//           type: ActionTypes.UPDATE_EDITOR,
-//           payload: data,
-//         });
-//       })
-//       .catch((err) => {
-//         dispatch(EditorActions.ready());
-//         dispatch(EditorActions.updateEditor(err));
-//       });
-//   };
-// };
-

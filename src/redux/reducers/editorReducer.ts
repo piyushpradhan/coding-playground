@@ -1,9 +1,10 @@
+import { Action } from "@remix-run/router";
 import ActionTypes from "../actions/utils/actionTypes";
 
 export interface EditorState {
   loading: boolean;
   error: string | null;
-  data: any;
+  data: string;
   currentFile: string;
   containerId: string | null;
   port: number | null;
@@ -34,9 +35,10 @@ export const editorReducer = (
         loading: false,
       };
     case ActionTypes.UPDATE_EDITOR:
+	  const updatedData = action.payload;
       return {
         ...state,
-        data: action.payload,
+		data: updatedData
       };
     case ActionTypes.UPDATE_CURRENT_FILE:
       return {
@@ -54,6 +56,11 @@ export const editorReducer = (
         ...state,
         port: action.payload,
       };
+	case ActionTypes.SAVE: 
+	  return {
+		...state,
+		data: action.payload
+	  }
     default:
       return state;
   }

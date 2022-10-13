@@ -44,3 +44,23 @@ export const fetchFileContents = async (
   );
   return contents.text();
 };
+
+export const saveFile = async (
+  containerId: string, 
+  filePath: string,
+  contents: string
+) => {
+  const response = await fetch(
+	process.env.REACT_APP_BASE_URL + `/containers/${containerId}/exec`,
+	{
+	  method: 'POST',
+	  headers: {
+		'Content-Type': 'application/x-www-form-urlencoded'
+	  },
+	  body: `command=echo "${escape(encodeURIComponent(contents))}" > ${filePath}`
+	}
+  );
+
+  console.log(response);
+  return response;
+}

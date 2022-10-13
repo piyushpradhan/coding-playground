@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from "react";
-import MonacoEditor, { EditorDidMount } from "react-monaco-editor";
+import { EditorDidMount } from "react-monaco-editor";
 import * as monaco from "monaco-editor";
 import Editor from "@monaco-editor/react";
-import { updateEditorContentActions } from "../redux/actions";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { fetchFileContents } from "../api/apiCalls";
+import { fetchFileContents, saveFile } from "../api/apiCalls";
 import { bindActionCreators } from "redux";
 import * as actionCretors from "../redux/actions/editorActions";
 import { useDispatch } from "react-redux";
+import { formatFileContents } from "../utils/helpers";
 
 const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
   autoIndent: "full",
@@ -32,13 +32,15 @@ const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
 const CustomEditor = () => {
   const [code, setCode] = React.useState("");
   const [codeValue, setCodeValue] = React.useState("");
-  const { containerId, data } = useSelector(
+  const { containerId, currentFile, data } = useSelector(
     (state: RootState) => state.editorReducer
   );
   const dispatch = useDispatch();
   const { updateEditorContentActions } = bindActionCreators(actionCretors, dispatch);
 
-  console.log(data);
+  useEffect(() => {
+	setCode(data);
+  }, [data]);
 
   useEffect(() => {
 	const getFileContents = async () => {
@@ -51,16 +53,20 @@ const CustomEditor = () => {
   useEffect(() => {
     const codeTimeout = setTimeout(() => {
       setCodeValue(code);
-      console.log("codeValue", codeValue);
     }, 2000);
     return () => clearTimeout(codeTimeout);
   }, [code]);
 
   const handleOnSave = () => {
-    window.onkeydown = (e: { key: string; ctrlKey: boolean; preventDefault: () => void; }) => {
+    window.onkeydown = async (e: { key: string; ctrlKey: boolean; preventDefault: () => void; }) => {
       if (e.key === "s" && e.ctrlKey === true) {
         e.preventDefault();
-        updateEditorContentActions(containerId!, code);
+		let formatted = formatFileContents(code);
+		updateEditorContentActions(formatted, currentFile);
+		if (code.trim() === "")
+		  await saveFile(containerId, currentFile, code);
+		else 
+		  await saveFile(containerId, currentFile, data);
       }
     };
   };

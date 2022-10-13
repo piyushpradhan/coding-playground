@@ -1,3 +1,5 @@
+import escapeStringRegexp from "escape-string-regexp";
+
 export const formatFileTree = (data) => {
   let fileTree = {};
   data.forEach((file) => {
@@ -13,3 +15,9 @@ export const formatFileTree = (data) => {
   });
   return fileTree;
 };
+
+export const formatFileContents = (data: string) => {
+  const regex = /"/g;
+  data.replace(regex, '\\\"')
+  return data;
+}

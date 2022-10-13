@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { createStore, Store } from "redux";
-import { logger, thunk } from "../middleware";
+import { thunk } from "../middleware";
+import logger from "redux-logger";
 import { rootReducer } from "../reducers";
 import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";

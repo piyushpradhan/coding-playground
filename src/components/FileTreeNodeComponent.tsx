@@ -1,5 +1,3 @@
-import React, { useRef } from "react";
-import { JsxElement } from "typescript";
 import { FileTreeNode } from "../redux/reducers/fileTreeReducer";
 
 type Props = {
@@ -13,10 +11,10 @@ const FileTreeNodeComponent = (props: Props) => {
   return (
 	<button
 	  onClick={() => props.openFile(props.item)}
-	  className="flex flex-col align-start text-sm py-1 hover:bg-gray-800 w-full"
-	  key={`${props.item.name}-${props.idx}`}
+	  className="flex flex-col align-start text-sm w-full"
+	  key={`${props.item.path}-${props.idx}`}
 	>
-	  <p className="pl-4 pr-16 text-start w-full">{props.item.name}</p>
+	  <p className="pl-4 pr-16 py-1 text-start w-full hover:bg-black" key={`${props.item.path}`}>{props.item.name}</p>
 	  {
 		props.item.children.map((child, idx) => {
 		  return (
