@@ -13,11 +13,12 @@ const FileTree = () => {
   const { containerId } = useSelector(
     (state: RootState) => state.editorReducer
   );
-  const { updateEditorContentActions } = bindActionCreators(actionCreators, dispatch);
+  const { updateEditorContentActions, updateCurrentFile } = bindActionCreators(actionCreators, dispatch);
 
   const openFile = async (item: FileTreeNode) => {
 	if (item.type === "file") {
 	  const data: any = await fetchFileContents(containerId!, item.path);
+	  updateCurrentFile(item.path);
 	  updateEditorContentActions(data, item.path);
 	}
   };

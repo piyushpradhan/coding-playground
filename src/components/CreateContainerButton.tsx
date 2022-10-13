@@ -19,7 +19,6 @@ const CreateContainerButton = () => {
     e.preventDefault();
     loadingState();
     const response = await startContainer();
-    console.log(response.container);
 	updateContainer(response.container, response.reactPort);
     readyState();
     navigate(`/playground/${response.container}`);

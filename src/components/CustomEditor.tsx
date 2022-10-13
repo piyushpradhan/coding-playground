@@ -4,11 +4,11 @@ import * as monaco from "monaco-editor";
 import Editor from "@monaco-editor/react";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { fetchFileContents, saveFile } from "../api/apiCalls";
+import { saveFile } from "../api/apiCalls";
 import { bindActionCreators } from "redux";
 import * as actionCretors from "../redux/actions/editorActions";
 import { useDispatch } from "react-redux";
-import { formatFileContents } from "../utils/helpers";
+import { formatFileContents, pickLanguage } from "../utils/helpers";
 
 const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
   autoIndent: "full",
@@ -42,28 +42,13 @@ const CustomEditor = () => {
 	setCode(data);
   }, [data]);
 
-  useEffect(() => {
-	const getFileContents = async () => {
-	  const appContents = await fetchFileContents(containerId!, "/app/src/App.js");
-	  updateEditorContentActions(appContents, "/app/src/App.js");
-	};
-	getFileContents();
-  }, []);
-
-  useEffect(() => {
-    const codeTimeout = setTimeout(() => {
-      setCodeValue(code);
-    }, 2000);
-    return () => clearTimeout(codeTimeout);
-  }, [code]);
-
   const handleOnSave = () => {
     window.onkeydown = async (e: { key: string; ctrlKey: boolean; preventDefault: () => void; }) => {
       if (e.key === "s" && e.ctrlKey === true) {
-        e.preventDefault();
-		let formatted = formatFileContents(code);
-		updateEditorContentActions(formatted, currentFile);
-		if (code.trim() === "")
+		e.preventDefault();
+		updateEditorContentActions(code, currentFile);
+		console.log(code);
+		if (code.trim() !== "")
 		  await saveFile(containerId, currentFile, code);
 		else 
 		  await saveFile(containerId, currentFile, data);
@@ -93,7 +78,7 @@ const CustomEditor = () => {
       <Editor
         width="100%"
         height="80vh"
-        language="javascript"
+        language={pickLanguage(currentFile)}
         theme="vs-dark"
         value={code}
         options={MONACO_OPTIONS}

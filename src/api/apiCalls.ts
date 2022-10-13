@@ -1,3 +1,5 @@
+import { formatFileContents } from "../utils/helpers";
+
 export const startContainer = async () => {
   const response = await fetch(
     process.env.REACT_APP_BASE_URL + "/containers/start",
@@ -50,6 +52,7 @@ export const saveFile = async (
   filePath: string,
   contents: string
 ) => {
+  console.log(formatFileContents(contents));
   const response = await fetch(
 	process.env.REACT_APP_BASE_URL + `/containers/${containerId}/exec`,
 	{
@@ -57,7 +60,7 @@ export const saveFile = async (
 	  headers: {
 		'Content-Type': 'application/x-www-form-urlencoded'
 	  },
-	  body: `command=echo "${escape(encodeURIComponent(contents))}" > ${filePath}`
+	  body: `command=echo "${formatFileContents(contents)}" > ${filePath}`
 	}
   );
 
