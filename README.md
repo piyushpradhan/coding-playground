@@ -1,46 +1,74 @@
-# Getting Started with Create React App
+# Minimal Coding Playground
+## Demo
+https://user-images.githubusercontent.com/54734029/195680500-364a7337-73f2-4a29-9aa8-d45a286f6e88.mp4
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+https://user-images.githubusercontent.com/54734029/195680633-037a9aec-8059-481f-b680-7fefa4cdf6d5.mp4
 
-## Available Scripts
+# Getting started
+### Setting it up locally 
+- Create a new React application to use as a template
+```bash
+npx create-react-app template
+```
+- Build the "playground" image using the following Dockerfile
+```Dockerfile
+# pull official base image
+FROM node:16.17.0
 
-In the project directory, you can run:
+WORKDIR /app
 
-### `npm start`
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# install app dependencies
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm install --silent
+RUN npm install react-scripts@3.4.1 -g --silent
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# add app
+COPY . ./
 
-### `npm test`
+EXPOSE 3000
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# start app
+CMD ["npm", "start"]
+```
+- put the Dockerfile inside root directory of the newly created (template) React app 
+- build the image with the name "playground"
+```bash
+mv Dockerfile template/
+docker build -t playground .
+```
 
-### `npm run build`
+- Clone the [backend repo](https://github.com/piyushpradhan/coding-playground-backend)
+```bash
+git clone https://github.com/piyushpradhan/coding-playground-backend.git
+yarn
+yarn start:dev
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Clone this repo and setup the .env file
+```bash
+git clone https://github.com/piyushpradhan/coding-playground.git
+```
+- .env file
+```bash
+# running locally 
+# URL of the backend server
+REACT_APP_BASE_URL='http://localhost:4000/api'
+REACT_APP_BASE_ADDRESS='http://localhost:4000'
+```
+- Install dependencies and run the app
+```bash
+yarn
+yarn start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Things to improve
+- Assign some of the heavy tasks, like creating containers to background threads
+- Implement a custom and better terminal interface
+- Better overall UI
+- Authentication and dashboard with existing playgrounds (containers) allowing users to load or delete their existing playgrounds
+- Better file tree
+- Multiple tabs in editor
