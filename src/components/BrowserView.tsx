@@ -15,7 +15,7 @@ const BrowserView = () => {
       <iframe
 		ref={browserRef}
         className="w-full h-full"
-        src={process.env.REACT_APP_BASE_ADDRESS + ":" + port}
+        src={process.env.REACT_APP_BASE_URL + "/preview/" + port}
         title="preview window"
       />
     </div>
