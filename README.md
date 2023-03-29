@@ -67,8 +67,6 @@ yarn start
 
 # How it works
 ![coding_playground_design](https://user-images.githubusercontent.com/54734029/195780312-a96d20a5-8d75-4ea2-8e3f-3fc5d970fb11.svg)
-### Why the browser preview isn't working
-- The <iframe> on the playground tries to get the `index.html` file from the build directory which requires the `build/static/js/index.js` file which for some reason can't be fetched from the container to the deployed server because of some deployment issues.
 
 # Things to improve
 - Assign some of the heavy tasks, like creating containers to background threads
