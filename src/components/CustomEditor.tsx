@@ -1,13 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { EditorDidMount } from "react-monaco-editor";
 import * as monaco from "monaco-editor";
 import Editor from "@monaco-editor/react";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { saveFile } from "../api/apiCalls";
-import { bindActionCreators } from "redux";
-import * as actionCretors from "../redux/actions/editorActions";
-import { useDispatch } from "react-redux";
+import * as actionCreators from "../redux/actions/editorActions";
 import { pickLanguage } from "../utils/helpers";
 
 const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
@@ -31,27 +29,27 @@ const MONACO_OPTIONS: monaco.editor.IEditorConstructionOptions = {
 
 const CustomEditor = () => {
   const [code, setCode] = React.useState("");
-  const [codeValue, setCodeValue] = React.useState("");
   const { containerId, currentFile, data } = useSelector(
     (state: RootState) => state.editorReducer
   );
-  const dispatch = useDispatch();
-  const { updateEditorContentActions } = bindActionCreators(actionCretors, dispatch);
+  const updateEditorContentActions = actionCreators.updateEditorContentActions;
 
   useEffect(() => {
-	setCode(data);
+    setCode(data);
   }, [data]);
 
   const handleOnSave = () => {
-    window.onkeydown = async (e: { key: string; ctrlKey: boolean; preventDefault: () => void; }) => {
+    window.onkeydown = async (e: {
+      key: string;
+      ctrlKey: boolean;
+      preventDefault: () => void;
+    }) => {
       if (e.key === "s" && e.ctrlKey === true) {
-		e.preventDefault();
-		updateEditorContentActions(code, currentFile);
-		console.log(code);
-		if (code.trim() !== "")
-		  await saveFile(containerId, currentFile, code);
-		else 
-		  await saveFile(containerId, currentFile, data);
+        e.preventDefault();
+        updateEditorContentActions(code, currentFile);
+        console.log(code);
+        if (code.trim() !== "") await saveFile(containerId, currentFile, code);
+        else await saveFile(containerId, currentFile, data);
       }
     };
   };
@@ -60,7 +58,7 @@ const CustomEditor = () => {
     if (editor && editor.getModel()) {
       const editorModel = editor.getModel();
       if (editorModel) {
-        editorModel?.setValue(data ?? '');
+        editorModel?.setValue(data ?? "");
       }
     }
     editor.focus();
@@ -80,7 +78,7 @@ const CustomEditor = () => {
         height="70vh"
         language={pickLanguage(currentFile)}
         theme="vs-dark"
-        value={code}
+        value={data}
         options={MONACO_OPTIONS}
         onChange={editorOnChange}
         onMount={editorDidMount}
