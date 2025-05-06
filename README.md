@@ -1,77 +1,116 @@
-# Minimal Coding Playground
-## Demo
-https://user-images.githubusercontent.com/54734029/195680500-364a7337-73f2-4a29-9aa8-d45a286f6e88.mp4
+# Online React Playground
 
-https://user-images.githubusercontent.com/54734029/195680633-037a9aec-8059-481f-b680-7fefa4cdf6d5.mp4
+Coding Playground Backend: https://github.com/piyushpradhan/coding-playground-backend.git
 
-# Getting started
-### Setting it up locally 
-- Create a new React application to use as a template
-```bash
-npx create-react-app template
-```
-- Build the "playground" image using the following Dockerfile
-```Dockerfile
-# pull official base image
-FROM node:16.17.0
+A web-based development environment that lets you write, edit, and run React code directly in your browser. This playground provides a complete development setup with a code editor, terminal, and live preview - all running in isolated Docker containers for security.
 
-WORKDIR /app
+## 🌟 Key Features
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+- **Code Editor**: Monaco Editor (VS Code's editor) with syntax highlighting and auto-completion
+- **Live Preview**: Real-time preview of your React application
+- **Terminal Access**: Built-in terminal for running commands and managing dependencies
+- **File Management**: File tree interface for organizing your project structure
+- **Containerized Environment**: Each playground runs in its own Docker container
+- **TypeScript Support**: Built with TypeScript for better development experience
+- **State Management**: Redux for managing application state
+- **Modern UI**: Clean interface built with React and Tailwind CSS
 
-# install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g --silent
+## 🛠️ Technology Stack
 
-# add app
-COPY . ./
+### Frontend
 
-EXPOSE 3000
+- React 18 with TypeScript
+- Redux Toolkit for state management
+- Monaco Editor for code editing
+- Tailwind CSS for styling
+- React Router for navigation
+- Various terminal emulation libraries
 
-# start app
-CMD ["npm", "start"]
-```
-- put the Dockerfile inside root directory of the newly created (template) React app 
-- build the image with the name "playground"
-```bash
-mv Dockerfile template/
-docker build -t playground .
-```
+### Backend
 
-- Clone the [backend repo](https://github.com/piyushpradhan/coding-playground-backend)
-```bash
-git clone https://github.com/piyushpradhan/coding-playground-backend.git
-yarn
-yarn start:dev
-```
+- Node.js
+- Docker for containerization
+- RESTful API architecture
 
-- Clone this repo and setup the .env file
+## 🚀 Live Demo
+
+Had to take it down due to AWS cost
+
+## 💻 Getting Started
+
+### Prerequisites
+
+- Node.js (v16.17.0 or later)
+- Docker
+- Yarn package manager
+
+### Local Development Setup
+
+1. **Clone the Repository**
+
 ```bash
 git clone https://github.com/piyushpradhan/coding-playground.git
+cd coding-playground
 ```
-- .env file
+
+2. **Set Up Environment Variables**
+   Create a `.env` file in the root directory:
+
 ```bash
-# running locally 
-# URL of the backend server
 REACT_APP_BASE_URL='http://localhost:4000/api'
 REACT_APP_BASE_ADDRESS='http://localhost:4000'
 ```
-- Install dependencies and run the app
+
+3. **Install Dependencies**
+
 ```bash
-yarn
+yarn install
+```
+
+4. **Start the Development Server**
+
+```bash
 yarn start
 ```
 
-# How it works
-![coding_playground_design](https://user-images.githubusercontent.com/54734029/195780312-a96d20a5-8d75-4ea2-8e3f-3fc5d970fb11.svg)
+### Docker Setup
 
-# Things to improve
-- Assign some of the heavy tasks, like creating containers to background threads
-- Implement a custom and better terminal interface
-- Better overall UI
-- Authentication and dashboard with existing playgrounds (containers) allowing users to load or delete their existing playgrounds
-- Better file tree
-- Multiple tabs in editor
+1. **Build the Docker Image**
+
+```bash
+docker build -t playground .
+```
+
+2. **Run the Container**
+
+```bash
+docker run -p 3000:3000 playground
+```
+
+## 🏗️ Architecture
+
+The application follows a modern microservices architecture:
+
+- Frontend: React-based SPA with Redux state management
+- Backend: Node.js API server
+- Execution Environment: Docker containers for code isolation
+- File System: Virtual file system for managing code files
+
+## 🔒 Security Features
+
+- Isolated code execution in Docker containers
+- Secure file system operations
+- Protected API endpoints
+- Environment variable management
+
+## 🎯 Future Enhancements
+
+- [ ] Implement WebSocket for real-time collaboration
+- [ ] Add user authentication and dashboard
+- [ ] Support for multiple programming languages/frameworks
+- [ ] Enhanced terminal interface
+- [ ] Code sharing capabilities
+- [ ] Performance optimizations for container management
+- [ ] Advanced file tree features
+- [ ] Multi-tab editor support
+- [ ] UI improvements
